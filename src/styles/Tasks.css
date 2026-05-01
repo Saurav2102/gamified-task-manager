@@ -1,0 +1,27 @@
+.tasks-page { padding-bottom: 2rem; }
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #e2e2e2;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #555570;
+  font-size: 1.1rem;
+  background: #1a1a2e;
+  border-radius: 16px;
+}
+
+.task-section { margin-bottom: 2rem; }
+
+.section-title {
+  font-size: 0.9rem;
+  color: #555570;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.8rem;
+}

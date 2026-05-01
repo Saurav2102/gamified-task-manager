@@ -1,0 +1,87 @@
+.recent-container {
+  background: #1a1a2e;
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.recent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.recent-title {
+  font-size: 1.1rem;
+  color: #e2e2e2;
+}
+
+.view-all-btn {
+  background: none;
+  border: 1px solid #e94560;
+  color: #e94560;
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.view-all-btn:hover {
+  background: #e94560;
+  color: white;
+}
+
+.recent-empty {
+  color: #555570;
+  text-align: center;
+  padding: 2rem;
+}
+
+.link {
+  color: #e94560;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.recent-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 0.5rem;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.recent-item:hover { background: #0f0f1a; }
+.recent-item.done { opacity: 0.5; }
+
+.recent-icon { font-size: 1.1rem; }
+
+.recent-name {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #e2e2e2;
+}
+
+.recent-item.done .recent-name { text-decoration: line-through; color: #666; }
+
+.recent-diff {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  text-transform: capitalize;
+}
+
+.diff-easy   { background: #1a3a1a; color: #4caf50; }
+.diff-medium { background: #3a2a0a; color: #ff9800; }
+.diff-hard   { background: #3a0a0a; color: #e94560; }
+
+.recent-xp {
+  color: #f0c040;
+  font-weight: 700;
+  font-size: 0.85rem;
+}

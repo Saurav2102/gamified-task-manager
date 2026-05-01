@@ -1,0 +1,75 @@
+.task-form-container {
+  background: #1a1a2e;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-title {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #e2e2e2;
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.task-input {
+  background: #0f0f1a;
+  border: 2px solid #16213e;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  color: #e2e2e2;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.task-input:focus {
+  border-color: #e94560;
+}
+
+.task-input::placeholder {
+  color: #555570;
+}
+
+.difficulty-selector {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.diff-btn {
+  flex: 1;
+  padding: 0.6rem;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #0f0f1a;
+  color: #a0a0b0;
+  transition: all 0.2s;
+}
+
+.diff-btn:hover { opacity: 0.85; }
+
+.diff-easy.selected  { background: #1a3a1a; border-color: #4caf50; color: #4caf50; }
+.diff-medium.selected { background: #3a2a0a; border-color: #ff9800; color: #ff9800; }
+.diff-hard.selected  { background: #3a0a0a; border-color: #e94560; color: #e94560; }
+
+.submit-btn {
+  background: #e94560;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.submit-btn:hover { opacity: 0.85; }
