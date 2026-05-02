@@ -3,37 +3,47 @@
 .achievements-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #e2e2e2;
 }
 
 .achievements-subtitle {
   color: #a0a0b0;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   margin-top: 0.3rem;
 }
 
 .achievements-summary {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .summary-item {
   background: #1a1a2e;
   border-radius: 12px;
-  padding: 0.8rem 1.2rem;
+  padding: 0.6rem 1rem;
   text-align: center;
+  min-width: 80px;
 }
 
 .summary-value {
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: #f0c040;
 }
 
 .summary-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #a0a0b0;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -63,14 +73,14 @@
 
 .badges-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1rem;
 }
 
 .badge-card {
   background: #1a1a2e;
   border-radius: 16px;
-  padding: 1.5rem 1rem;
+  padding: 1.2rem 0.8rem;
   text-align: center;
   border: 2px solid transparent;
   transition: all 0.2s;
@@ -81,39 +91,51 @@
 .badge-card:hover  { transform: translateY(-2px); }
 
 .badge-icon-wrapper {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: #0f0f1a;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1rem;
+  margin: 0 auto 0.8rem;
 }
 
-.badge-icon { font-size: 1.8rem; }
+.badge-icon { font-size: 1.5rem; }
 
 .badge-name {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #a0a0b0;
   margin-bottom: 0.4rem;
 }
 
 .badge-description {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #555570;
   margin-bottom: 0.6rem;
 }
 
 .badge-earned-date {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #4caf50;
   font-weight: 600;
 }
 
 .badge-locked-text {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #555570;
   font-style: italic;
 }
+
+@media (max-width: 480px) {
+  .badges-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.badge-card { background: var(--bg-secondary); }
+.badge-icon-wrapper { background: var(--bg-primary); }
+.summary-item { background: var(--bg-secondary); }
+.badges-progress-bar { background: var(--bg-secondary); }
+.page-title { color: var(--text-primary); }

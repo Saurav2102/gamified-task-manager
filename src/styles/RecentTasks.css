@@ -85,3 +85,19 @@
   font-weight: 700;
   font-size: 0.85rem;
 }
+
+@media (max-width: 480px) {
+  .recent-item {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .recent-name {
+    width: 100%;
+  }
+}
+
+.recent-container { background: var(--bg-secondary); }
+.recent-name { color: var(--text-primary); }
+.recent-item:hover { background: var(--bg-primary); }
+.recent-empty { color: var(--text-faint); }

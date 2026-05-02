@@ -73,3 +73,18 @@
 }
 
 .submit-btn:hover { opacity: 0.85; }
+
+@media (max-width: 600px) {
+  .difficulty-selector {
+    flex-direction: column;
+  }
+
+  .diff-btn {
+    width: 100%;
+  }
+}
+
+.task-form-container { background: var(--bg-secondary); }
+.form-title { color: var(--text-primary); }
+.task-input { background: var(--bg-primary); border-color: var(--border); color: var(--text-primary); }
+.diff-btn { background: var(--bg-primary); color: var(--text-muted); }

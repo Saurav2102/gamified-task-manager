@@ -4,6 +4,8 @@ import { GameProvider } from './context/GameContext'
 import './index.css'
 import App from './App.jsx'
 
+document.body.setAttribute("data-theme", JSON.parse(localStorage.getItem("darkMode") ?? "true") ? "dark" : "light")
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <GameProvider>

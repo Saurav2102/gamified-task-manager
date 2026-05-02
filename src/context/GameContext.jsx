@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react"
+import { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react"
 
 const GameContext = createContext()
 
@@ -7,9 +7,7 @@ const LEVEL_THRESHOLDS = [0, 100, 250, 500, 850, 1300, 1900, 2600, 3400, 4300, 5
 function calculateLevel(xp) {
   let level = 1
   for (let i = 0; i < LEVEL_THRESHOLDS.length; i++) {
-    if (xp >= LEVEL_THRESHOLDS[i]) {
-      level = i + 1
-    }
+    if (xp >= LEVEL_THRESHOLDS[i]) level = i + 1
   }
   return level
 }
@@ -39,46 +37,67 @@ export function GameProvider({ children }) {
     return localStorage.getItem("lastCompletedDate") || null
   })
 
-  const [isLoading, setIsLoading] = useState(true)
   const [badges, setBadges] = useState(() => {
     const saved = localStorage.getItem("badges")
     return saved ? JSON.parse(saved) : []
   })
 
-  const level = calculateLevel(xp)
-  const xpForNextLevel = getXPForNextLevel(level)
-  const xpForCurrentLevel = LEVEL_THRESHOLDS[level - 1] || 0
-  const xpProgress = xp - xpForCurrentLevel
-  const xpNeeded = xpForNextLevel - xpForCurrentLevel
+  const [isLoading, setIsLoading] = useState(true)
+
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem("darkMode")
+    return saved !== null ? JSON.parse(saved) : true
+  })
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(isDarkMode))
+    document.body.setAttribute("data-theme", isDarkMode ? "dark" : "light")
+  }, [isDarkMode])
+
+  const toggleDarkMode = useCallback(() => {
+    setIsDarkMode(prev => !prev)
+  }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => { localStorage.setItem("tasks", JSON.stringify(tasks)) }, [tasks])
   useEffect(() => { localStorage.setItem("xp", xp) }, [xp])
   useEffect(() => { localStorage.setItem("streak", streak) }, [streak])
   useEffect(() => { localStorage.setItem("lastCompletedDate", lastCompletedDate) }, [lastCompletedDate])
   useEffect(() => { localStorage.setItem("badges", JSON.stringify(badges)) }, [badges])
-  useEffect(() => {
-  const timer = setTimeout(() => setIsLoading(false), 800)
-  return () => clearTimeout(timer)
-}, [])
 
-  function checkBadges(newXp, newStreak, completedTasks) {
-    const newBadges = [...badges]
-    const addBadge = (id, name, description) => {
-      if (!newBadges.find(b => b.id === id)) {
-        newBadges.push({ id, name, description, earnedAt: new Date().toISOString() })
+  const { level, xpForNextLevel, xpForCurrentLevel, xpProgress, xpNeeded } = useMemo(() => {
+    const level = calculateLevel(xp)
+    const xpForNextLevel = getXPForNextLevel(level)
+    const xpForCurrentLevel = LEVEL_THRESHOLDS[level - 1] || 0
+    const xpProgress = xp - xpForCurrentLevel
+    const xpNeeded = xpForNextLevel - xpForCurrentLevel
+    return { level, xpForNextLevel, xpForCurrentLevel, xpProgress, xpNeeded }
+  }, [xp])
+
+  const checkBadges = useCallback((newXp, newStreak, completedTasks) => {
+    setBadges(prevBadges => {
+      const newBadges = [...prevBadges]
+      const addBadge = (id, name, description) => {
+        if (!newBadges.find(b => b.id === id)) {
+          newBadges.push({ id, name, description, earnedAt: new Date().toISOString() })
+        }
       }
-    }
-    if (completedTasks >= 1)  addBadge("first_task", "First Step", "Completed your first task!")
-    if (completedTasks >= 10) addBadge("ten_tasks", "On a Roll", "Completed 10 tasks!")
-    if (completedTasks >= 25) addBadge("twenty_five", "Grinder", "Completed 25 tasks!")
-    if (newStreak >= 3)       addBadge("streak_3", "Hat Trick", "3 day streak!")
-    if (newStreak >= 7)       addBadge("streak_7", "Week Warrior", "7 day streak!")
-    if (newXp >= 500)         addBadge("xp_500", "XP Hunter", "Earned 500 XP!")
-    if (newXp >= 1000)        addBadge("xp_1000", "Legend", "Earned 1000 XP!")
-    setBadges(newBadges)
-  }
+      if (completedTasks >= 1)  addBadge("first_task", "First Step", "Completed your first task!")
+      if (completedTasks >= 10) addBadge("ten_tasks", "On a Roll", "Completed 10 tasks!")
+      if (completedTasks >= 25) addBadge("twenty_five", "Grinder", "Completed 25 tasks!")
+      if (newStreak >= 3)       addBadge("streak_3", "Hat Trick", "3 day streak!")
+      if (newStreak >= 7)       addBadge("streak_7", "Week Warrior", "7 day streak!")
+      if (newXp >= 500)         addBadge("xp_500", "XP Hunter", "Earned 500 XP!")
+      if (newXp >= 1000)        addBadge("xp_1000", "Legend", "Earned 1000 XP!")
+      return newBadges
+    })
+  }, [])
 
-  function addTask(title, difficulty) {
+  const addTask = useCallback((title, difficulty) => {
     const xpReward = difficulty === "easy" ? 20 : difficulty === "medium" ? 50 : 100
     const newTask = {
       id: Date.now(),
@@ -89,43 +108,51 @@ export function GameProvider({ children }) {
       createdAt: new Date().toISOString()
     }
     setTasks(prev => [newTask, ...prev])
-  }
+  }, [])
 
-  function completeTask(taskId) {
-    let earnedXP = 0
-    const updatedTasks = tasks.map(task => {
-      if (task.id === taskId && !task.completed) {
-        earnedXP = task.xpReward
-        return { ...task, completed: true, completedAt: new Date().toISOString() }
-      }
-      return task
+  const completeTask = useCallback((taskId) => {
+    setTasks(prevTasks => {
+      const task = prevTasks.find(t => t.id === taskId)
+      if (!task || task.completed) return prevTasks
+
+      const earnedXP = task.xpReward
+      const updatedTasks = prevTasks.map(t =>
+        t.id === taskId ? { ...t, completed: true, completedAt: new Date().toISOString() } : t
+      )
+
+      setXp(prevXp => {
+        const newXp = prevXp + earnedXP
+        setStreak(prevStreak => {
+          const today = new Date().toDateString()
+          setLastCompletedDate(prevDate => {
+            let newStreak = prevStreak
+            if (prevDate !== today) {
+              const yesterday = new Date()
+              yesterday.setDate(yesterday.getDate() - 1)
+              newStreak = prevDate === yesterday.toDateString() ? prevStreak + 1 : 1
+            }
+            const completedCount = updatedTasks.filter(t => t.completed).length
+            checkBadges(newXp, newStreak, completedCount)
+            return today
+          })
+          return prevStreak
+        })
+        return newXp
+      })
+
+      return updatedTasks
     })
-    if (earnedXP === 0) return
-    const newXp = xp + earnedXP
-    setXp(newXp)
-    setTasks(updatedTasks)
-    const today = new Date().toDateString()
-    let newStreak = streak
-    if (lastCompletedDate !== today) {
-      const yesterday = new Date()
-      yesterday.setDate(yesterday.getDate() - 1)
-      newStreak = lastCompletedDate === yesterday.toDateString() ? streak + 1 : 1
-      setStreak(newStreak)
-      setLastCompletedDate(today)
-    }
-    const completedCount = updatedTasks.filter(t => t.completed).length
-    checkBadges(newXp, newStreak, completedCount)
-  }
+  }, [checkBadges])
 
-  function deleteTask(taskId) {
+  const deleteTask = useCallback((taskId) => {
     setTasks(prev => prev.filter(task => task.id !== taskId))
-  }
+  }, [])
 
   return (
     <GameContext.Provider value={{
       tasks, xp, level, streak, badges,
       xpProgress, xpNeeded, xpForNextLevel,
-      isLoading,
+      isLoading, isDarkMode, toggleDarkMode,
       addTask, completeTask, deleteTask
     }}>
       {children}

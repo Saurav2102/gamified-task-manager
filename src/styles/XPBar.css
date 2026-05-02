@@ -44,3 +44,8 @@
   color: #555570;
   text-align: right;
 }
+
+.xpbar-container { background: var(--bg-secondary); }
+.xpbar-track { background: var(--bg-primary); }
+.xpbar-numbers { color: var(--text-muted); }
+.xpbar-total { color: var(--text-faint); }

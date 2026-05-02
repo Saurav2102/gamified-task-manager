@@ -1,3 +1,27 @@
+[data-theme="dark"] {
+  --bg-primary:    #0f0f1a;
+  --bg-secondary:  #1a1a2e;
+  --bg-tertiary:   #16213e;
+  --text-primary:  #e2e2e2;
+  --text-muted:    #a0a0b0;
+  --text-faint:    #555570;
+  --accent:        #e94560;
+  --accent-gold:   #f0c040;
+  --border:        #16213e;
+}
+
+[data-theme="light"] {
+  --bg-primary:    #f0f2f5;
+  --bg-secondary:  #ffffff;
+  --bg-tertiary:   #e8eaf0;
+  --text-primary:  #1a1a2e;
+  --text-muted:    #555570;
+  --text-faint:    #a0a0b0;
+  --accent:        #e94560;
+  --accent-gold:   #d4a000;
+  --border:        #e0e0e0;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,10 +29,11 @@
 }
 
 body {
-  background: #0f0f1a;
-  color: #e2e2e2;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: 'Segoe UI', sans-serif;
   min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
 }
 
 .app {

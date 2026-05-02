@@ -1,18 +1,20 @@
+import { memo, useMemo } from "react"
 import { useGame } from "../context/GameContext"
 import "../styles/StatsCards.css"
 
-function StatsCards() {
-  const { tasks, streak, badges, level } = useGame()
+const StatsCards = memo(function StatsCards() {
+  const { tasks, streak, badges } = useGame()
 
-  const completed = tasks.filter(t => t.completed).length
-  const active = tasks.filter(t => !t.completed).length
-
-  const stats = [
-    { icon: "🔥", label: "Day Streak",      value: streak,    color: "#e94560" },
-    { icon: "✅", label: "Tasks Done",      value: completed, color: "#4caf50" },
-    { icon: "⚔️", label: "Active Quests",   value: active,    color: "#ff9800" },
-    { icon: "🏆", label: "Badges Earned",   value: badges.length, color: "#f0c040" },
-  ]
+  const stats = useMemo(() => {
+    const completed = tasks.filter(t => t.completed).length
+    const active = tasks.filter(t => !t.completed).length
+    return [
+      { icon: "🔥", label: "Day Streak",    value: streak,        color: "#e94560" },
+      { icon: "✅", label: "Tasks Done",    value: completed,     color: "#4caf50" },
+      { icon: "⚔️", label: "Active Quests", value: active,        color: "#ff9800" },
+      { icon: "🏆", label: "Badges Earned", value: badges.length, color: "#f0c040" },
+    ]
+  }, [tasks, streak, badges])
 
   return (
     <div className="stats-grid">
@@ -25,6 +27,6 @@ function StatsCards() {
       ))}
     </div>
   )
-}
+})
 
 export default StatsCards

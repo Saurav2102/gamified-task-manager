@@ -3,7 +3,7 @@ import { useGame } from "../context/GameContext"
 import "../styles/Navbar.css"
 
 function Navbar() {
-  const { xp, level, streak } = useGame()
+  const { xp, level, streak, isDarkMode, toggleDarkMode } = useGame()
 
   return (
     <nav className="navbar">
@@ -24,10 +24,15 @@ function Navbar() {
         </NavLink>
       </div>
 
-      <div className="navbar-stats">
-        <span className="stat">⚡ {xp} XP</span>
-        <span className="stat">🌟 Level {level}</span>
-        <span className="stat">🔥 {streak} day streak</span>
+      <div className="navbar-right">
+        <div className="navbar-stats">
+          <span className="stat">⚡ {xp} XP</span>
+          <span className="stat">🌟 Level {level}</span>
+          <span className="stat">🔥 {streak} day streak</span>
+        </div>
+        <button className="theme-toggle" onClick={toggleDarkMode}>
+          {isDarkMode ? "☀️" : "🌙"}
+        </button>
       </div>
     </nav>
   )

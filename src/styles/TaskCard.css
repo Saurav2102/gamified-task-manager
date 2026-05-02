@@ -78,3 +78,19 @@
 }
 
 .delete-btn:hover { opacity: 1; }
+
+@media (max-width: 480px) {
+  .task-card {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .task-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+.task-card { background: var(--bg-secondary); }
+.task-card:hover { border-color: var(--border); }
+.task-title { color: var(--text-primary); }

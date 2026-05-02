@@ -1,7 +1,8 @@
+import { memo } from "react"
 import { useGame } from "../context/GameContext"
 import "../styles/TaskCard.css"
 
-function TaskCard({ task }) {
+const TaskCard = memo(function TaskCard({ task }) {
   const { completeTask, deleteTask } = useGame()
 
   return (
@@ -27,6 +28,6 @@ function TaskCard({ task }) {
       </div>
     </div>
   )
-}
+})
 
 export default TaskCard
