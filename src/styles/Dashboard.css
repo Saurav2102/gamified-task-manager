@@ -48,3 +48,29 @@
 
 .dashboard-title { color: var(--text-primary); }
 .dashboard-subtitle { color: var(--text-muted); }
+
+.quote-card {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #e94560;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.quote-icon { font-size: 1.3rem; }
+
+.quote-text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.quote-author {
+  color: #e94560;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
